@@ -1,0 +1,45 @@
+{
+  "name": "@licencly/sdk",
+  "version": "1.0.0",
+  "description": "Verify Licencly licenses and check for entitled updates.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/licencly/licencly-node.git"
+  },
+  "homepage": "https://licencly.com",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "tsc -p tsconfig.json && node --test build/test/*.test.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "licencly",
+    "licensing",
+    "license",
+    "software-licensing",
+    "updates"
+  ],
+  "devDependencies": {
+    "@types/node": "^22.7.0",
+    "typescript": "^5.6.3"
+  }
+}
