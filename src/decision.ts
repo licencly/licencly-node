@@ -71,6 +71,14 @@ export function evaluate(
   };
   const seconds = Math.floor(now.getTime() / 1000);
 
+  // An expired status is an expiry, not a generic refusal. The server derives
+  // the status when it signs, so a licence past its date arrives as "expired"
+  // rather than "active" with a stale date. Checking the status first made
+  // Outcome.Expired unreachable in practice, and told a customer who needed to
+  // renew that they had been suspended or revoked.
+  if (claims.status === Status.Expired) {
+    return { ...base, outcome: Outcome.Expired };
+  }
   if (claims.status !== Status.Active) {
     return { ...base, outcome: Outcome.NotActive };
   }

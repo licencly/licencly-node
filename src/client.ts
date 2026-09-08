@@ -18,7 +18,7 @@ import {
 } from "./updates.js";
 
 /** Sent in the user agent, so a vendor's traffic is identifiable in support. */
-export const VERSION = "1.0.0";
+export const VERSION = "1.0.1";
 
 const DEFAULT_BASE_URL = "https://licencly.com";
 const DEFAULT_TIMEOUT_MS = 10_000;

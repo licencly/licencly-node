@@ -1,6 +1,6 @@
 {
   "name": "@licencly/sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Verify Licencly licenses and check for entitled updates.",
   "license": "MIT",
   "repository": {
