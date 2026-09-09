@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist/cjs",
+    "rootDir": "src",
+    "sourceMap": false,
+    // NodeNext decides ESM or CJS from the nearest package.json "type", so the
+    // build writes one into dist/cjs saying "commonjs". CommonJS here rather
+    // than Node16/NodeNext because this output has to be require()-able whatever
+    // the consumer's own module setting is.
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "declaration": true
+  },
+  "include": ["src"]
+}

@@ -138,3 +138,41 @@ backwards of more than 24 hours. That is a speed bump, not a fix.
 `npm test` runs `testdata/vectors.json`, the same suite every Licencly SDK
 runs. If this SDK ever disagrees with the Go, Python or .NET ones, that test
 fails first.
+
+## Electron
+
+Works in the **main process**, which is Node. Two things to get right, both of
+which fail quietly:
+
+```js
+const { app } = require("electron");
+const path = require("node:path");
+const { LicenclyClient, FileCache } = require("@licencly/sdk");
+
+const client = new LicenclyClient({
+  productUuid: "...",
+  publicKeys: { "...": "..." },
+  // Not the default. A packaged app is expected to write inside userData, and
+  // a sandboxed one (Mac App Store, MSIX) may be refused permission to write
+  // anywhere else. Leave it and the cache silently never persists, so every
+  // launch needs the network and the offline guarantee is gone.
+  cache: new FileCache(path.join(app.getPath("userData"), "license.lcl")),
+});
+```
+
+Keep licensing in the main process and send the renderer a decision over IPC.
+With `contextIsolation` on, the renderer has no Node access anyway, and the
+licence key should not be somewhere a rendered page could reach.
+
+For updates, let entitlement pick the feed rather than letting `electron-updater`
+look on its own:
+
+```js
+const result = await client.checkForUpdate(key, { currentVersion: app.getVersion() });
+if (result.outcome === "update_available") {
+  autoUpdater.setFeedURL({ provider: "generic", url: result.downloadUrl });
+  autoUpdater.checkForUpdatesAndNotify();
+}
+```
+
+A worked example is in the server repository under `examples/app-electron`.
